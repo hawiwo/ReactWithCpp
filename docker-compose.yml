@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: node.js
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/src
+#      - '/src/node_modules'
+    depends_on:
+      - firebird  
+  # https://hub.docker.com/r/jacobalberty/firebird
+  # https://ib-aid.com/en/articles/all-firebird-and-interbase-on-disk-structure-ods-versions/
+  firebird:
+    image: jacobalberty/firebird:v3.0.8
+    container_name: firebird
+    volumes:
+      - ./fdb/:/firebird/data
+    ports:
+      - 3050:3050
+    environment:
+      ISC_PASSWORD: masterkey
+      
+
